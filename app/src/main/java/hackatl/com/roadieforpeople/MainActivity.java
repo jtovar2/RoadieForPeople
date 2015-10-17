@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +37,10 @@ public class MainActivity extends FragmentActivity implements
 
     public static final int NUM_FRAGMENTS = 2;
 
+
+    FragmentAdapter mFragmentAdapter;
+
+
     //Location variables
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
@@ -51,10 +56,14 @@ public class MainActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        ViewPager pager = (ViewPager) findViewById(R.id.viewPagerIntroScreen);
+
+
+        mFragmentAdapter = new FragmentAdapter(getSupportFragmentManager());
         MapViewFragment fragment = MapViewFragment.newInstance();
 
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        pager.setAdapter(mFragmentAdapter);
 
 
 
