@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import hackatl.com.roadieforpeople.model.Route;
 import retrofit.Callback;
+import retrofit.http.DELETE;
 import retrofit.http.GET;
+import retrofit.http.POST;
 
 /**
  * Created by javier on 10/17/15.
@@ -18,7 +20,12 @@ public interface RoutesApi
     void getRoutes(String startLocation, Callback<ArrayList<Route>> routes);
 
 
-    @GET("/getRoute")
-    void getRoute(Long routeId)
+    @POST("/placeRoute")
+    void placeRoute(Route newRoute);
+
+    @DELETE("/deleteRoute")
+    void deleteRoute(Long routeId);
+
+
 
 }
