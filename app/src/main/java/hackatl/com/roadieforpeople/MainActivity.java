@@ -34,7 +34,7 @@ public class MainActivity extends FragmentActivity implements
 
 
 
-    public static final int NUM_FRAGMENTS = 3;
+    public static final int NUM_FRAGMENTS = 2;
 
     //Location variables
     GoogleApiClient mGoogleApiClient;
@@ -55,6 +55,8 @@ public class MainActivity extends FragmentActivity implements
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+
 
 
 
