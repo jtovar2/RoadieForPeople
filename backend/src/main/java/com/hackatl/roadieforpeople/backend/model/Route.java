@@ -1,5 +1,8 @@
 package com.hackatl.roadieforpeople.backend.model;
 
+
+import com.google.appengine.api.search.GeoPoint;
+import com.google.appengine.repackaged.com.google.type.LatLng;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
@@ -20,6 +23,9 @@ public class Route implements Serializable
     String endLocation;
     @Index
     String startLocation;
+
+    RoadieGeoPoint startLatLng;
+    RoadieGeoPoint endLatLng;
 
     @Index
     Date leavingDate;
@@ -69,4 +75,17 @@ public class Route implements Serializable
     {
         commitedUsers.add(newUser);
     }
+
+    public RoadieGeoPoint getStartLatLng()
+    {
+        return startLatLng;
+    }
+
+    public RoadieGeoPoint getEndLatLng()
+    {
+        return endLatLng;
+    }
+
+    public Route()
+    {}
 }

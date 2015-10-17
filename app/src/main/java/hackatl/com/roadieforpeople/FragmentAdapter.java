@@ -76,4 +76,7 @@ public class FragmentAdapter extends FragmentPagerAdapter {
     public Fragment getRegisteredFragment(int position) {
         return mAvailableFragments.get(position);
     }
+
+
+
 }

@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/ccer9AIKJMo1f031lNtGJFDmN9Q\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/uDmf-iJV6ByZmWe-3x0vX3ocRbc\"",
  "discoveryVersion": "v1",
  "id": "myApi:v1",
  "name": "myApi",
@@ -82,6 +82,10 @@
     }
    }
   },
+  "RoadieGeoPoint": {
+   "id": "RoadieGeoPoint",
+   "type": "object"
+  },
   "RoadieUser": {
    "id": "RoadieUser",
    "type": "object",
@@ -114,6 +118,9 @@
     "driver": {
      "$ref": "RoadieUser"
     },
+    "endLatLng": {
+     "$ref": "RoadieGeoPoint"
+    },
     "endLocation": {
      "type": "string"
     },
@@ -124,6 +131,9 @@
     "leavingDate": {
      "type": "string",
      "format": "date-time"
+    },
+    "startLatLng": {
+     "$ref": "RoadieGeoPoint"
     },
     "startLocation": {
      "type": "string"

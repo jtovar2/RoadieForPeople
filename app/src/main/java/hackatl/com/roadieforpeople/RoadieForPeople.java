@@ -1,7 +1,9 @@
 package hackatl.com.roadieforpeople;
 
 
+import android.app.Activity;
 import android.support.multidex.MultiDexApplication;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -16,7 +18,7 @@ import retrofit.client.Response;
  */
 public class RoadieForPeople extends MultiDexApplication
 {
-
+    public static final String LOGTAG = "Roadie Application";
     public static final int ROUTE_SUCESS = 1;
     public static final int ROUTE_FAILURE = 2;
 
@@ -50,13 +52,17 @@ public class RoadieForPeople extends MultiDexApplication
             @Override
             public void success(ArrayList<Route> routes, Response response)
             {
+
                 mRoutes = routes;
+                mRouteListener.onRetrofitResult(ROUTE_SUCESS);
             }
 
             @Override
             public void failure(RetrofitError error)
             {
-
+                Log.v(LOGTAG, "Unable to download routes");
+                Log.v(LOGTAG, error.toString());
+                Log.v(LOGTAG, error.getUrl());
             }
         });
     }
@@ -77,5 +83,10 @@ public class RoadieForPeople extends MultiDexApplication
     public interface RouteListener
     {
         void onRetrofitResult(int a);
+    }
+
+    public void setRouteListener(Activity a)
+    {
+        mRouteListener = (RouteListener) a;
     }
 }

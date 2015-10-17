@@ -11,6 +11,8 @@ public class Route
     String endLocation;
     String startLocation;
 
+    ///Geoppoint end and start location
+
     Date leavingDate;
 
     Long id;
@@ -19,6 +21,16 @@ public class Route
 
     ArrayList<RoadieUser> commitedUsers;
 
+
+    public String getStartLocation()
+    {
+        return startLocation;
+    }
+
+    public String getEndLocation()
+    {
+        return endLocation;
+    }
 
 
 }
