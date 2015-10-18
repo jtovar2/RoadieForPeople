@@ -7,7 +7,9 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import hackatl.com.roadieforpeople.model.RoadieUser;
 import hackatl.com.roadieforpeople.model.Route;
+import hackatl.com.roadieforpeople.model.Routes;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -26,11 +28,22 @@ public class RoadieForPeople extends MultiDexApplication
 
     RouteListener mRouteListener;
 
-    ArrayList<Route> mRoutes;
+    Routes mRoutes;
     private static RoutesApi mApi;
     private static RestAdapter mRestAdapter;
 
-    public ArrayList<Route> getRoutes()
+    RoadieUser mUser;
+
+    public void setUser(RoadieUser newUser)
+    {
+        mUser = newUser;
+    }
+
+    public RoadieUser getUser()
+    {
+        return mUser;
+    }
+    public Routes getRoutes()
     {
         return mRoutes;
     }
@@ -48,9 +61,9 @@ public class RoadieForPeople extends MultiDexApplication
         }
 
 
-        mApi.getRoutes(startLocation, new Callback<ArrayList<Route>>() {
+        mApi.getRoutes(startLocation, new Callback<Routes>() {
             @Override
-            public void success(ArrayList<Route> routes, Response response)
+            public void success(Routes routes, Response response)
             {
 
                 mRoutes = routes;
@@ -78,6 +91,11 @@ public class RoadieForPeople extends MultiDexApplication
     public void createApi()
     {
         mApi = mRestAdapter.create(RoutesApi.class);
+    }
+
+    public RoutesApi getApi()
+    {
+        return mApi;
     }
 
     public interface RouteListener

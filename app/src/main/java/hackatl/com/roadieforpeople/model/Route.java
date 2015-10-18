@@ -32,5 +32,14 @@ public class Route
         return endLocation;
     }
 
+    public Route(String newStartLocation, String newEndLocation, Date newDate, RoadieUser newDriver)
+    {
+        endLocation = newEndLocation;
+        startLocation = newStartLocation;
+        leavingDate = newDate;
+        commitedUsers = new ArrayList<>();
+
+    }
+
 
 }

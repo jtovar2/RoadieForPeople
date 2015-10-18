@@ -2,6 +2,7 @@ package hackatl.com.roadieforpeople;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -12,16 +13,19 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -31,16 +35,22 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import hackatl.com.roadieforpeople.model.RoadieGeoPoint;
+import hackatl.com.roadieforpeople.model.RoadieUser;
 import hackatl.com.roadieforpeople.model.Route;
+import hackatl.com.roadieforpeople.model.Routes;
 
 
 public class MainActivity extends FragmentActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        LocationListener, RoadieForPeople.RouteListener
+        LocationListener, RoadieForPeople.RouteListener, GoogleMap.OnMarkerClickListener
 {
 
-
+    public static final String LATLNG = "position";
     public static final String LOGTAG = "MainActivity";
+    public static final String STARTLOCATION = "start";
+    public static final String ENDLOCATION = "end";
+
 
 
     //These are for saving stuff in bundle
@@ -75,6 +85,8 @@ public class MainActivity extends FragmentActivity implements
 
 
         ((RoadieForPeople) getApplication()).setRouteListener(MainActivity.this);
+
+        ((RoadieForPeople) getApplication()).setUser(new RoadieUser("Javier", "Tovar", "404-422-2794", new Long(101)));
 
         ViewPager pager = (ViewPager) findViewById(R.id.viewPagerIntroScreen);
 
@@ -186,21 +198,6 @@ public class MainActivity extends FragmentActivity implements
         }
 
 
-        // Getting latitude of the current location
-        double latitude = newLocation.getLatitude();
-
-        // Getting longitude of the current location
-        double longitude = newLocation.getLongitude();
-
-        // Creating a LatLng object for the current location
-        LatLng latLng = new LatLng(latitude, longitude);
-        mCurrentLocationMarker = mMap.addMarker(new MarkerOptions().position(latLng));
-        // Showing the current location in Google Map
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-        // Zoom in the Google Map
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(7));
-
     }
 
     @Override
@@ -277,6 +274,7 @@ public class MainActivity extends FragmentActivity implements
     {
         SupportMapFragment fragmentWithMap = (SupportMapFragment) mFragmentAdapter.getRegisteredFragment(0);
         mMap = fragmentWithMap.getMap();
+        mMap.setOnMarkerClickListener(this);
     }
 
 
@@ -284,6 +282,8 @@ public class MainActivity extends FragmentActivity implements
     {
         try{
             Geocoder geo = new Geocoder(MainActivity.this.getApplicationContext(), Locale.getDefault());
+
+
             List<Address> addresses = geo.getFromLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(), 1);
             if (addresses.isEmpty()) {
                 Log.d(LOGTAG, "address is empty");
@@ -296,6 +296,7 @@ public class MainActivity extends FragmentActivity implements
 
                     mCurrentLocality = addresses.get(0).getLocality();
                     ((RoadieForPeople) getApplication()).generateRoutes(mCurrentLocality);
+                    mFragmentAdapter.setStartingLocation(mCurrentLocality);
 
                 }
             }
@@ -322,19 +323,24 @@ public class MainActivity extends FragmentActivity implements
     }
 
 
-    public void addRouteMarkers(ArrayList<Route> newRoutes)
+    public void addRouteMarkers(Routes newRoutes)
     {
         mRouteMakerList = new ArrayList<Marker>();
 
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        Marker currentMarker = null;
+
         Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
-        for(Route currentRoute: newRoutes)
+        for(Route currentRoute: newRoutes.getRoutes())
         {
             try
             {
                 List<Address> addresses = geocoder.getFromLocationName(currentRoute.getEndLocation(), 2);
                 LatLng latLng = new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
 
-                mMap.addMarker(new MarkerOptions().position(latLng));
+
+                mRouteMakerList.add(mMap.addMarker(new MarkerOptions().position(latLng)));
 
             }
             catch(Exception e)
@@ -342,5 +348,38 @@ public class MainActivity extends FragmentActivity implements
                 Log.v(LOGTAG, "Address not found " + currentRoute.getEndLocation());
             }
         }
+
+        for (Marker marker : mRouteMakerList)
+        {
+            builder.include(marker.getPosition());
+        }
+        LatLngBounds bounds = builder.build();
+        int padding = 40; // offset from edges of the map in pixels
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+
+        mMap.animateCamera(cu);
     }
+
+    public void submitRoute(View v)
+    {
+
+    }
+
+
+
+    @Override
+    public boolean onMarkerClick(Marker marker)
+    {
+
+        Intent i = new Intent(MainActivity.this, TripList.class);
+        LatLng position = marker.getPosition();
+        RoadieGeoPoint geoPoint = new RoadieGeoPoint(position.latitude, position.longitude);
+
+        i.putExtra(LATLNG, geoPoint);
+        startActivity(i);
+
+
+        return true;
+    }
+
 }

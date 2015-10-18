@@ -10,12 +10,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".RoadieForPeople"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name=".RoadieForPeople">
+        android:theme="@style/AppTheme" >
         <uses-library android:name="com.google.android.maps" />
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -36,6 +37,14 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" >
+        </activity>
+        <activity
+            android:name=".TripList"
+            android:label="@string/title_activity_trip_list" >
+        </activity>
+        <activity
+            android:name=".TripInfo"
+            android:label="@string/title_activity_trip_info" >
         </activity>
     </application>
 

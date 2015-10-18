@@ -12,4 +12,9 @@ public class Routes implements Serializable {
 
     public Routes()
     {}
+
+    public ArrayList<Route> getRoutes()
+    {
+        return items;
+    }
 }

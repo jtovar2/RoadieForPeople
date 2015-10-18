@@ -23,7 +23,7 @@ public interface RoutesApi
 
 
     @POST("/placeRoute")
-    void placeRoute(Route newRoute);
+    void placeRoute(Route newRoute, Callback callback);
 
     @DELETE("/deleteRoute")
     void deleteRoute(Long routeId);

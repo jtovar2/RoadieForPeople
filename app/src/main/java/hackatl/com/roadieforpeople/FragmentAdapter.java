@@ -20,7 +20,7 @@ public class FragmentAdapter extends FragmentPagerAdapter {
 
 
     FragmentManager mFragmentManager;
-
+    String mStartingLocation;
     SparseArray<Fragment> mAvailableFragments;
 
     public FragmentAdapter(FragmentManager fragmentManager)
@@ -28,9 +28,14 @@ public class FragmentAdapter extends FragmentPagerAdapter {
         super(fragmentManager);
         mFragmentManager = fragmentManager;
         mAvailableFragments = new SparseArray<Fragment>();
+        mStartingLocation = "Atlanta";
     }
 
 
+    public void setStartingLocation(String newStartingLocation)
+    {
+        mStartingLocation = newStartingLocation;
+    }
 
 
     /**
@@ -46,8 +51,8 @@ public class FragmentAdapter extends FragmentPagerAdapter {
                 return mapFragment;
             default:
                 //TODO create Fragment to create route
-                SupportMapFragment mapViewFragment = SupportMapFragment.newInstance();
-                return mapViewFragment;
+                PlaceRouteFragment routeFragment = PlaceRouteFragment.newInstance(mStartingLocation);
+                return routeFragment;
         }
     }
 

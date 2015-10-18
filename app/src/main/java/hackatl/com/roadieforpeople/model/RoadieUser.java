@@ -11,12 +11,12 @@ public class RoadieUser
     String lastName;
     String phoneNumber;
 
-    public RoadieUser(String newFirstName, String newLastName, String newPhoneNumber)
+    public RoadieUser(String newFirstName, String newLastName, String newPhoneNumber, Long newId)
     {
         phoneNumber = newPhoneNumber;
         firstName = newFirstName;
         lastName = newLastName;
-        id = null;
+        id = newId;
     }
 
     public String getPhoneNumber()
@@ -33,4 +33,5 @@ public class RoadieUser
     {
         return id;
     }
+
 }
